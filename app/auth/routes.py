@@ -10,7 +10,7 @@ from app.auth import auth
 def register():
     if current_user.is_authenticated:
         return redirect(url_for('records.dashboard'))
-    
+
     if request.method == 'POST':
         full_name = request.form.get('full_name')
         email     = request.form.get('email')
@@ -62,8 +62,7 @@ def login():
             flash('Invalid email or password.', 'danger')
             return redirect(url_for('auth.login'))
 
-        login_user(user, remember=True)
-
+        # Save audit log BEFORE login_user
         log = AuditLog(
             user_id    = user.id,
             action     = 'User logged in',
@@ -73,8 +72,10 @@ def login():
         db.session.add(log)
         db.session.commit()
 
+        # Login AFTER db operations
+        login_user(user, remember=True)
+
         flash(f'Welcome back, {user.full_name}!', 'success')
-        print(f"DEBUG: Logging in user {user.email}, authenticated: {user.is_authenticated}")
         return redirect(url_for('records.dashboard'))
 
     return render_template('login.html')

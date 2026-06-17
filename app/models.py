@@ -5,7 +5,10 @@ from datetime import datetime
 # Required by Flask-Login to load a user from the database
 @login_manager.user_loader
 def load_user(user_id):
-    return db.session.get(User, int(user_id))
+    print(f"DEBUG: Loading user with id={user_id}")
+    user = db.session.get(User, int(user_id))
+    print(f"DEBUG: Loaded user={user}")
+    return user
 
 # ── USERS TABLE ──────────────────────────────────────────────
 class User(UserMixin, db.Model):

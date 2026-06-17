@@ -1,9 +1,8 @@
-from flask import render_template
-from flask_login import login_required, current_user
+from flask import render_template, redirect, url_for
+from flask_login import current_user,login_required
 from app.records import records
 
 @records.route('/dashboard')
 @login_required
 def dashboard():
-    print(f"DEBUG: User {current_user} reached dashboard")
     return render_template('dashboard.html')

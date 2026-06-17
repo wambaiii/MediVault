@@ -10,6 +10,9 @@ def create_app():
     app = Flask(__name__)
     app.config.from_object(Config)
 
+    # Force secret key
+    app.secret_key = 'medivault-super-secret-key-2024-strathmore'
+
     db.init_app(app)
     login_manager.init_app(app)
 
